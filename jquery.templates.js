@@ -440,12 +440,20 @@ if (!String.prototype.format) {
 $.fn.template = function(model, template) {
 
 	var self = this;
+
+	if (typeof(model) === 'string' && typeof(template) === 'undefined') {
+		var tmp = template;
+		template = model;
+		model = tmp;
+	}
+
 	var id = template || '';
 
 	if (template) {
 		if (template.indexOf('{') === -1)
 			template = $(template).html();
-	}
+	} else
+		template = self.attr('data-template');
 
 	var isArray = model instanceof Array;
 	var length = isArray ? model.length : 0;
@@ -462,10 +470,13 @@ $.fn.template = function(model, template) {
 			id = el.attr('data-id') || '';
 
 		if (id.length === 0)
+			id = el.attr('data-model') || '';
+
+		if (id.length === 0)
 			id = el.attr('class') || '';
 
 		if (id.length === 0)
-			throw new Error('You must define "id" or "data-id" or "class" attribute in element.');
+			throw new Error('You must define "id" or "data-id" or "data-model" or "class" attribute in element.');
 
 		var obj = jquerytemplates_cache[id];
 
@@ -477,6 +488,12 @@ $.fn.template = function(model, template) {
 			obj = template_parse(template);
 			jquerytemplates_cache[id] = obj;
 		}
+
+		if (typeof(model) === 'undefined' || model === null) {
+			el.html('');
+			return;
+		}
+
 
 		if (!isArray) {
 			el.html(template_eval(obj, model));
