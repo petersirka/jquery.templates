@@ -19,6 +19,7 @@ Example:
 
 <script type="text/template" id="template">
 	<div class="user">
+		<div>Index: {#}</div>
 		<div>User: {!name} (encoded), {name} (raw)</div>
 		<div>Credits: {credits | ### ### ##.##} {credits | 'zero', 'one', 'two-three-four', 'other'}</div>
 		<div>Registered: {registered | yyyy-MM-dd}</div>
@@ -42,9 +43,5 @@ $('#render-with-template').template([{ name: 'Peter' }, { name: 'Lucia' }, { nam
 
 // or
 
-$('#render').template(['A', 'B', 'C'], '<div>{}</div>');
-
-// or
-
-$('#render').template(['A', 'B', 'C'], '<div>{}</div>');
+$('#render').template(['A', 'B', 'C'], '<div>{} - encoded, {!} - raw (index: {#})</div>');
 ```

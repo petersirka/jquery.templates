@@ -103,7 +103,7 @@ function template_parse(template) {
 	return { generator: eval('(function(prop){return ' + fn.join('+') + ';})'), property: property };
 }
 
-function template_eval(generator, model) {
+function template_eval(generator, model, indexer) {
 
 	var params = [];
 	var length = generator.property.length;
@@ -125,7 +125,9 @@ function template_eval(generator, model) {
 					val = model[arr[0]][arr[1]][arr[3]][arr[4]];
 				else if (arr.length === 5)
 					val = model[arr[0]][arr[1]][arr[3]][arr[4]][arr[5]];
-			} else
+			} else if (property === '#')
+				val = indexer;
+			else
 				val = model[property];
 		} else
 			val = model;
@@ -422,7 +424,17 @@ if (!String.prototype.padRight) {
 }
 
 String.prototype.template = function(model) {
-	return template_eval(template_parse(obj), model);
+
+	var generator = template_parse(obj);
+
+	if (!(model instanceof Array))
+		return template_eval(generator, model, 0);
+
+	var builder = '';
+	for (var i = 0; i < length; i++)
+		builder += template_eval(generator, model[i], i);
+
+	return builder;
 };
 
 if (!String.prototype.format) {
@@ -496,13 +508,13 @@ $.fn.template = function(model, template) {
 
 
 		if (!isArray) {
-			el.html(template_eval(obj, model));
+			el.html(template_eval(obj, model, 0));
 			return;
 		}
 
 		var builder = '';
 		for (var i = 0; i < length; i++)
-			builder += template_eval(obj, model[i]);
+			builder += template_eval(obj, model[i], i);
 
 		el.html(builder);
 	});
