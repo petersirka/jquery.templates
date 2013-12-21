@@ -1,4 +1,4 @@
-# jQuery templating
+# jQuery templates
 
 Simple jQuery template engine.
 
