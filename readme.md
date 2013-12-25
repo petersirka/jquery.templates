@@ -2,11 +2,18 @@
 
 Simple jQuery template engine.
 
-__IMPORTANT:__
+- easy to use
+- minified only 8.8 kB (without GZIP compression)
+- great functionality
+- great use
+- works in IE 7+
+- supports rendering of collections
 
-- [partial.js - web application framework for node.js](https://github.com/petersirka/partial.js)
+__MUST SEE:__
+
 - [partial.js client-side routing](https://github.com/petersirka/partial.js-clientside)
 - [jQuery two way bindings](https://github.com/petersirka/jquery.bindings)
+- [web application framework for node.js - partial.js](https://github.com/petersirka/partial.js)
 
 Example:
 
