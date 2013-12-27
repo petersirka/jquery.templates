@@ -13,7 +13,7 @@ __MUST SEE:__
 
 - [partial.js client-side routing](https://github.com/petersirka/partial.js-clientside)
 - [jQuery two way bindings](https://github.com/petersirka/jquery.bindings)
-- [web application framework for node.js - partial.js](https://github.com/petersirka/partial.js)
+- [Web application framework for node.js - partial.js](https://github.com/petersirka/partial.js)
 
 Example:
 
@@ -33,6 +33,10 @@ Example:
 	</div>
 </script>
 ```
+
+#### $.template(model, [template], [append])
+
+> append {Boolean} - appned or rewrite? Default: __false__.
 
 ```js
 $('#render').template({ name: 'Peter <b>Širka</b>', credits: 5, registerd: new Date() }, '#template');

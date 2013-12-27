@@ -449,9 +449,15 @@ if (!String.prototype.format) {
 	};
 }
 
-$.fn.template = function(model, template) {
+$.fn.template = function(model, template, append) {
 
 	var self = this;
+
+	if (typeof(template) === 'boolean') {
+		var tmp = append;
+		append = template;
+		template = append;
+	}
 
 	if (typeof(model) === 'string' && typeof(template) === 'undefined') {
 		var tmp = template;
@@ -508,7 +514,10 @@ $.fn.template = function(model, template) {
 
 
 		if (!isArray) {
-			el.html(template_eval(obj, model, 0));
+			if (append)
+				el.append(template_eval(obj, model, 0));
+			else
+				el.html(template_eval(obj, model, 0));
 			return;
 		}
 
@@ -516,7 +525,10 @@ $.fn.template = function(model, template) {
 		for (var i = 0; i < length; i++)
 			builder += template_eval(obj, model[i], i);
 
-		el.html(builder);
+		if (append)
+			el.append(builder);
+		else
+			el.html(builder);
 	});
 
 	return self;
