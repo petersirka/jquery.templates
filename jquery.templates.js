@@ -1,5 +1,3 @@
-var jquerytemplates_cache = {};
-
 function template_parse(template) {
 
 	var self = this;
@@ -467,11 +465,10 @@ $.fn.template = function(model, template, append) {
 
 	var id = template || '';
 
-	if (template) {
+	if (template.length > 0) {
 		if (template.indexOf('{') === -1)
 			template = $(template).html();
-	} else
-		template = self.attr('data-template');
+	}
 
 	var isArray = model instanceof Array;
 	var length = isArray ? model.length : 0;
@@ -480,38 +477,19 @@ $.fn.template = function(model, template, append) {
 
 		var self = this;
 		var el = $(self);
-
-		if (id.length === 0)
-			id = el.attr('id') || '';
-
-		if (id.length === 0)
-			id = el.attr('data-id') || '';
-
-		if (id.length === 0)
-			id = el.attr('data-model') || '';
-
-		if (id.length === 0)
-			id = el.attr('class') || '';
-
-		if (id.length === 0)
-			throw new Error('You must define "id" or "data-id" or "data-model" or "class" attribute in element.');
-
-		var obj = jquerytemplates_cache[id];
+		var obj = el.data('generator');
 
 		if (typeof(obj) === 'undefined') {
-
-			if (typeof(template) === 'undefined')
-				template = el.html();
-
+			if (template.length === 0)
+				template = el.attr('data-template') || el.html();
 			obj = template_parse(template);
-			jquerytemplates_cache[id] = obj;
+			el.data('generator', obj);
 		}
 
 		if (typeof(model) === 'undefined' || model === null) {
 			el.html('');
 			return;
 		}
-
 
 		if (!isArray) {
 			if (append)
