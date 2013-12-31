@@ -463,7 +463,8 @@ $.fn.template = function(model, template, append) {
 		model = tmp;
 	}
 
-	var id = template || '';
+	template = template || '';
+	var id = template;
 
 	if (template.length > 0) {
 		if (template.indexOf('{') === -1)
