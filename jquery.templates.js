@@ -409,14 +409,14 @@ if (!Number.prototype.pluralize) {
 
 if (!String.prototype.padLeft) {
 	String.prototype.padLeft = function (max, c) {
-	    var self = this.toString();
+	    var self = this;
 	    return Array(Math.max(0, max - self.length + 1)).join(c || '0') + self;
 	};
 }
 
 if (!String.prototype.padRight) {
 	String.prototype.padRight = function (max, c) {
-	    var self = this.toString();
+	    var self = this;
 	    return self + Array(Math.max(0, max - self.length + 1)).join(c || '0');
 	};
 }
@@ -429,6 +429,7 @@ String.prototype.template = function(model) {
 		return template_eval(generator, model, 0);
 
 	var builder = '';
+	var length = model.length;
 	for (var i = 0; i < length; i++)
 		builder += template_eval(generator, model[i], i);
 
