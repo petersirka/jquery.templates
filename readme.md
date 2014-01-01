@@ -57,7 +57,7 @@ Example:
 
 #### $.template(model, [template], [append])
 
-> append {Boolean} - appned or rewrite? Default: __false__.
+> append {Boolean} - append or rewrite? Default: __false__.
 
 ```js
 $('#render').template({ name: 'Peter <b>Širka</b>', credits: 5, registerd: new Date() }, '#template');
