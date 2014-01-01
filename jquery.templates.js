@@ -98,7 +98,7 @@ function template_parse(template) {
 			fn.push("'" + str.replace(/\'/g, "\\'").replace(/\n/g, '\\n') + "'");
 	}
 
-	return { generator: eval('(function(prop){return ' + fn.join('+') + ';})'), property: property };
+	return { generator: new Function('prop', 'return ' + fn.join('+')), property: property };
 }
 
 function template_eval(generator, model, indexer) {
@@ -181,8 +181,6 @@ function template_parse_pluralize(value) {
 
 	index = value.indexOf(condition, beg + 1);
 	d = value.substring(beg + 1, index).replace(/\'/g, "\\'");
-
-	console.log(d);
 
 	return ".pluralize('{0}','{1}','{2}','{3}')".format(a, b, c, d);
 }
@@ -485,6 +483,7 @@ $.fn.template = function(model, template, append) {
 			if (template.length === 0)
 				template = el.attr('data-template') || el.html();
 			obj = template_parse(template);
+
 			el.data('generator', obj);
 		}
 
