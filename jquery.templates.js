@@ -98,7 +98,7 @@ function template_parse(template) {
 			fn.push("'" + str.replace(/\'/g, "\\'").replace(/\n/g, '\\n') + "'");
 	}
 
-	return { generator: new Function('prop', 'return ' + fn.join('+')), property: property };
+	return { generator: new Function('prop', 'return ' + fn.join('+').replace(/\n|\r|\t/g, '')), property: property };
 }
 
 function template_eval(generator, model, indexer) {
@@ -537,6 +537,17 @@ $.fn.template = function(model, template, append) {
 
 	return self;
 };
+
+if (!Array.prototype.indexOf) {
+	Array.prototype.indexOf = function(value, index) {
+		var self = this;
+		var length = self.length;
+		for (var i = index; i < length; i++)
+			if (self[i] === value)
+				return i;
+		return -1;
+	};
+}
 
 Number.prototype.condition = function(ifTrue, ifFalse) {
 	return (this % 2 === 0 ? ifTrue : ifFalse) || '';
