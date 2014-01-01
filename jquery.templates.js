@@ -33,7 +33,7 @@ function template_parse(template) {
 		index = name.indexOf('|');
         if (index !== -1) {
 
-            format = name.substring(index + 1, name.length - 1).trim();
+            format = name.substring(index + 1, name.length - 1).trim().replace(/&nbsp;/g, ' ');
             name = name.substring(1, index);
 
             var pluralize = template_parse_pluralize(format);
@@ -278,7 +278,7 @@ if (!Number.prototype.format) {
 		var output = '';
 		var length = 0;
 
-		if (typeof(format) === STRING) {
+		if (typeof(format) === 'string') {
 
 			var d = false;
 			length = format.length;
@@ -478,25 +478,42 @@ $.fn.template = function(model, template, append) {
 		var self = this;
 		var el = $(self);
 		var obj = el.data('generator');
+		var isTable = self.nodeName.toLowerCase() === 'table';
 
 		if (typeof(obj) === 'undefined') {
-			if (template.length === 0)
-				template = el.attr('data-template') || el.html();
-			obj = template_parse(template);
+			if (template.length === 0) {
+				template = el.attr('data-template');
+				if (typeof(template) === 'undefined' || template.length === 0) {
+					if (isTable)
+						template = el.find('tr')[0].outerHTML;
+					else
+						template = el.html();
+				}
+			}
 
+			obj = template_parse(template);
 			el.data('generator', obj);
 		}
 
 		if (typeof(model) === 'undefined' || model === null) {
-			el.html('');
+			if (isTable)
+				el.find('tr').remove();
+			else
+				el.html('');
 			return;
 		}
 
 		if (!isArray) {
-			if (append)
+			if (append) {
 				el.append(template_eval(obj, model, 0));
-			else
+				return;
+			}
+			if (!isTable) {
 				el.html(template_eval(obj, model, 0));
+				return;
+			}
+			el.find('tr').remove();
+			el.append(template_eval(obj, model, 0));
 			return;
 		}
 
@@ -504,10 +521,18 @@ $.fn.template = function(model, template, append) {
 		for (var i = 0; i < length; i++)
 			builder += template_eval(obj, model[i], i);
 
-		if (append)
+		if (append === true) {
 			el.append(builder);
-		else
+			return;
+		}
+
+		if (!isTable) {
 			el.html(builder);
+			return;
+		}
+
+		el.find('tr').remove();
+		el.append(builder);
 	});
 
 	return self;
