@@ -421,7 +421,7 @@ if (!String.prototype.padRight) {
 
 String.prototype.template = function(model) {
 
-	var generator = template_parse(obj);
+	var generator = template_parse(this);
 
 	if (!(model instanceof Array))
 		return template_eval(generator, model, 0);
