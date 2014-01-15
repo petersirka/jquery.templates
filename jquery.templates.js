@@ -115,14 +115,19 @@ function template_eval(generator, model, indexer) {
 
 			if (property.indexOf('.') !== -1) {
 				var arr = property.split('.');
-				if (arr.length === 2)
+				var length2 = arr.length;
+				if (length2 === 2)
 					val = model[arr[0]][arr[1]];
-				else if (arr.length === 3)
-					val = model[arr[0]][arr[1]][arr[3]];
-				else if (arr.length === 4)
-					val = model[arr[0]][arr[1]][arr[3]][arr[4]];
-				else if (arr.length === 5)
-					val = model[arr[0]][arr[1]][arr[3]][arr[4]][arr[5]];
+				else if (length2 === 3)
+					val = model[arr[0]][arr[1]][arr[2]];
+				else if (length2 === 4)
+					val = model[arr[0]][arr[1]][arr[2]][arr[3]];
+				else if (length2 === 5)
+					val = model[arr[0]][arr[1]][arr[2]][arr[3]][arr[4]];
+				else if (length2 === 6)
+					val = model[arr[0]][arr[1]][arr[2]][arr[3]][arr[4]][arr[5]];
+				else if (length2 === 7)
+					val = model[arr[0]][arr[1]][arr[2]][arr[3]][arr[4]][arr[5]][arr[6]];
 			} else if (property === '#')
 				val = indexer;
 			else
